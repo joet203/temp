@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Environment Info</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-start: #1a1a1a;
+            --bg-mid: #2d2d2d;
+            --bg-end: #1a1a1a;
+            --primary: #0ea5e9;
+            --secondary: #06b6d4;
+            --text: #e0e0e0;
+            --text-dim: #888;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(14, 165, 233, 0.2);
+            --card-hover-border: rgba(14, 165, 233, 0.5);
+            --card-shadow: rgba(14, 165, 233, 0.2);
+        }
+
+        /* Theme 1: Dark Charcoal + Electric Blue */
+        body.theme-1 {
+            --bg-start: #1a1a1a;
+            --bg-mid: #2d2d2d;
+            --bg-end: #1a1a1a;
+            --primary: #0ea5e9;
+            --secondary: #38bdf8;
+            --card-border: rgba(14, 165, 233, 0.3);
+            --card-hover-border: rgba(14, 165, 233, 0.6);
+            --card-shadow: rgba(14, 165, 233, 0.3);
+        }
+
+        /* Theme 2: True Black + Neon Terminal */
+        body.theme-2 {
+            --bg-start: #000000;
+            --bg-mid: #0a0a0a;
+            --bg-end: #000000;
+            --primary: #00ff41;
+            --secondary: #00ffff;
+            --card-bg: rgba(0, 255, 65, 0.03);
+            --card-border: rgba(0, 255, 65, 0.3);
+            --card-hover-border: rgba(0, 255, 65, 0.6);
+            --card-shadow: rgba(0, 255, 65, 0.3);
+        }
+
+        /* Theme 3: Dark Slate + Orange Coral */
+        body.theme-3 {
+            --bg-start: #1e293b;
+            --bg-mid: #334155;
+            --bg-end: #0f172a;
+            --primary: #f97316;
+            --secondary: #fb923c;
+            --card-bg: rgba(249, 115, 22, 0.03);
+            --card-border: rgba(249, 115, 22, 0.3);
+            --card-hover-border: rgba(249, 115, 22, 0.6);
+            --card-shadow: rgba(249, 115, 22, 0.3);
+        }
+
+        /* Theme 4: Deep Navy + Ice Blue */
+        body.theme-4 {
+            --bg-start: #0c1e3d;
+            --bg-mid: #1e3a5f;
+            --bg-end: #0a1628;
+            --primary: #60a5fa;
+            --secondary: #e0f2fe;
+            --card-bg: rgba(96, 165, 250, 0.03);
+            --card-border: rgba(96, 165, 250, 0.3);
+            --card-hover-border: rgba(96, 165, 250, 0.6);
+            --card-shadow: rgba(96, 165, 250, 0.3);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .theme-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--card-border);
+            background: var(--card-bg);
+            color: var(--text);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--card-hover-border);
+            transform: scale(1.05);
+        }
+
+        .theme-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #000;
+            border-color: transparent;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--card-border), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: var(--card-hover-border);
+            box-shadow: 0 8px 24px var(--card-shadow);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .icon {
+            font-size: 1.3rem;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 10px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: #fff;
+            font-weight: 600;
+            text-align: right;
+            font-size: 0.85rem;
+            overflow-wrap: break-word;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        .spinner {
+            border: 3px solid var(--card-border);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            animation: spin 1s linear infinite;
+            margin: 15px auto;
+        }
+
+        .network-list {
+            margin-top: 10px;
+        }
+
+        .network-item {
+            background: var(--card-bg);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .network-name {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+
+        .network-detail {
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-left: 10px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .refresh-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: #000;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px var(--card-shadow);
+            font-size: 0.9rem;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px var(--card-shadow);
+        }
+
+        .refresh-btn:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .refresh-btn {
+                bottom: 15px;
+                right: 15px;
+                padding: 10px 20px;
+            }
+
+            .theme-btn {
+                font-size: 0.65rem;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body class="theme-1">
+    <div class="container">
+        <header>
+            <h1>System Environment Dashboard</h1>
+            <p class="subtitle">Real-Time Monitoring</p>
+        </header>
+
+        <div class="theme-selector">
+            <button class="theme-btn active" onclick="setTheme('theme-1', this)">Charcoal + Electric Blue</button>
+            <button class="theme-btn" onclick="setTheme('theme-2', this)">Black + Neon Terminal</button>
+            <button class="theme-btn" onclick="setTheme('theme-3', this)">Slate + Orange Coral</button>
+            <button class="theme-btn" onclick="setTheme('theme-4', this)">Navy + Ice Blue</button>
+        </div>
+
+        <div id="client-info" class="grid">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="icon">💻</span>
+                    Client Information
+                    <span class="status-indicator"></span>
+                </h2>
+                <div id="client-content" class="loading">
+                    <div class="spinner"></div>
+                    Loading client data...
+                </div>
+            </div>
+        </div>
+
+        <div id="server-info" class="grid">
+            <div class="card">
+                <h2 class="card-title">
+                    <span class="icon">🖥️</span>
+                    Server Information
+                    <span class="status-indicator"></span>
+                </h2>
+                <div id="server-content" class="loading">
+                    <div class="spinner"></div>
+                    Loading server data...
+                </div>
+            </div>
+        </div>
+
+        <button class="refresh-btn" onclick="loadAllInfo()">↻ Refresh</button>
+    </div>
+
+    <script>
+        // Theme switcher
+        function setTheme(theme, btn) {
+            document.body.className = theme;
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            localStorage.setItem('theme', theme);
+        }
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'theme-1';
+        document.body.className = savedTheme;
+        document.querySelector(`[onclick*="${savedTheme}"]`)?.classList.add('active');
+
+        // Client Information Gathering
+        function getClientInfo() {
+            const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
+            return {
+                browser: {
+                    name: getBrowserName(),
+                    version: navigator.appVersion,
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    languages: navigator.languages.join(', '),
+                    cookiesEnabled: navigator.cookieEnabled,
+                    onLine: navigator.onLine
+                },
+                screen: {
+                    resolution: `${screen.width} x ${screen.height}`,
+                    availableResolution: `${screen.availWidth} x ${screen.availHeight}`,
+                    colorDepth: `${screen.colorDepth}-bit`,
+                    pixelRatio: window.devicePixelRatio
+                },
+                viewport: {
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                },
+                performance: {
+                    memory: navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'N/A',
+                    hardwareConcurrency: navigator.hardwareConcurrency || 'N/A',
+                    connectionType: connection ? connection.effectiveType : 'N/A',
+                    downlink: connection ? `${connection.downlink} Mbps` : 'N/A'
+                },
+                platform: {
+                    os: navigator.platform,
+                    vendor: navigator.vendor,
+                    maxTouchPoints: navigator.maxTouchPoints
+                },
+                time: {
+                    localTime: new Date().toLocaleString(),
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    timezoneOffset: new Date().getTimezoneOffset()
+                }
+            };
+        }
+
+        function getBrowserName() {
+            const ua = navigator.userAgent;
+            if (ua.includes('Firefox')) return 'Firefox';
+            if (ua.includes('Edg')) return 'Edge';
+            if (ua.includes('Chrome')) return 'Chrome';
+            if (ua.includes('Safari')) return 'Safari';
+            if (ua.includes('Opera')) return 'Opera';
+            return 'Unknown';
+        }
+
+        // Display Client Information
+        function displayClientInfo() {
+            const info = getClientInfo();
+            const content = document.getElementById('client-content');
+
+            content.innerHTML = `
+                <div class="info-section">
+                    <div class="info-row">
+                        <span class="info-label">Browser</span>
+                        <span class="info-value">${info.browser.name}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Language</span>
+                        <span class="info-value">${info.browser.language}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Online Status</span>
+                        <span class="info-value">${info.browser.onLine ? '✓ Online' : '✗ Offline'}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Screen</span>
+                        <span class="info-value">${info.screen.resolution}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Viewport</span>
+                        <span class="info-value">${info.viewport.width} x ${info.viewport.height}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Color Depth</span>
+                        <span class="info-value">${info.screen.colorDepth}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Pixel Ratio</span>
+                        <span class="info-value">${info.screen.pixelRatio}x</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">CPU Cores</span>
+                        <span class="info-value">${info.performance.hardwareConcurrency}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Memory</span>
+                        <span class="info-value">${info.performance.memory}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Connection</span>
+                        <span class="info-value">${info.performance.connectionType}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Platform</span>
+                        <span class="info-value">${info.platform.os}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Timezone</span>
+                        <span class="info-value">${info.time.timezone}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Fetch and Display Server Information
+        async function displayServerInfo() {
+            const content = document.getElementById('server-content');
+
+            try {
+                const response = await fetch('/api/server-info');
+                const info = await response.json();
+
+                let networkHTML = '';
+                for (const [name, addrs] of Object.entries(info.networkInterfaces)) {
+                    if (addrs.length > 0) {
+                        networkHTML += `
+                            <div class="network-item">
+                                <div class="network-name">${name}</div>
+                                ${addrs.map(addr => `
+                                    <div class="network-detail">${addr.family}: ${addr.address}</div>
+                                `).join('')}
+                            </div>
+                        `;
+                    }
+                }
+
+                content.innerHTML = `
+                    <div class="info-section">
+                        <div class="info-row">
+                            <span class="info-label">Hostname</span>
+                            <span class="info-value">${info.hostname}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Platform</span>
+                            <span class="info-value">${info.platform} (${info.architecture})</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">CPU</span>
+                            <span class="info-value">${info.cpus} cores</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Memory</span>
+                            <span class="info-value">${info.freeMemory} / ${info.totalMemory}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Uptime</span>
+                            <span class="info-value">${info.uptime}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Load Avg</span>
+                            <span class="info-value">${info.loadAverage.join(', ')}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Node</span>
+                            <span class="info-value">${info.nodeVersion}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Timezone</span>
+                            <span class="info-value">${info.timezone}</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Environment</span>
+                            <span class="info-value">${info.env.nodeEnv}</span>
+                        </div>
+                    </div>
+                    ${networkHTML ? `<div class="network-list"><h3 style="color: var(--primary); margin: 12px 0 8px 0; font-size: 0.9rem; font-weight: 700;">Network Interfaces</h3>${networkHTML}</div>` : ''}
+                `;
+            } catch (error) {
+                content.innerHTML = `
+                    <div style="color: #ff4444; text-align: center; padding: 20px;">
+                        ⚠️ Failed to load server information
+                        <br><small>${error.message}</small>
+                    </div>
+                `;
+            }
+        }
+
+        // Load all information
+        function loadAllInfo() {
+            displayClientInfo();
+            displayServerInfo();
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', loadAllInfo);
+
+        // Update viewport info on resize
+        window.addEventListener('resize', displayClientInfo);
+    </script>
+</body>
+</html>

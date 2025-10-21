@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Previews</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .theme-card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .theme-header {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .theme-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .theme-subtitle {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            opacity: 0.6;
+        }
+
+        .theme-body {
+            padding: 20px;
+        }
+
+        .mini-card {
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+        }
+
+        .info-label {
+            opacity: 0.7;
+        }
+
+        .info-value {
+            font-weight: 600;
+        }
+
+        /* Theme 1: Dark Charcoal + Electric Blue */
+        .theme-1 .theme-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+        }
+        .theme-1 .theme-title {
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .theme-1 .mini-card {
+            background: rgba(14, 165, 233, 0.05);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+        }
+        .theme-1 .theme-body {
+            background: #1a1a1a;
+        }
+
+        /* Theme 2: True Black + Neon Terminal */
+        .theme-2 .theme-header {
+            background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%);
+        }
+        .theme-2 .theme-title {
+            background: linear-gradient(135deg, #00ff41, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .theme-2 .mini-card {
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+        }
+        .theme-2 .theme-body {
+            background: #000000;
+        }
+
+        /* Theme 3: Dark Slate + Orange Coral */
+        .theme-3 .theme-header {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #0f172a 100%);
+        }
+        .theme-3 .theme-title {
+            background: linear-gradient(135deg, #f97316, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .theme-3 .mini-card {
+            background: rgba(249, 115, 22, 0.05);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+        }
+        .theme-3 .theme-body {
+            background: #1e293b;
+        }
+
+        /* Theme 4: Deep Navy + Ice Blue */
+        .theme-4 .theme-header {
+            background: linear-gradient(135deg, #0c1e3d 0%, #1e3a5f 50%, #0a1628 100%);
+        }
+        .theme-4 .theme-title {
+            background: linear-gradient(135deg, #60a5fa, #e0f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .theme-4 .mini-card {
+            background: rgba(96, 165, 250, 0.05);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+        }
+        .theme-4 .theme-body {
+            background: #0c1e3d;
+        }
+
+        .cta {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .cta a {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            color: #000;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: transform 0.3s;
+        }
+
+        .cta a:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Choose Your Theme</h1>
+
+    <div class="grid">
+        <div class="theme-card theme-1">
+            <div class="theme-header">
+                <div class="theme-title">Charcoal + Electric Blue</div>
+                <div class="theme-subtitle">MINIMAL & SLEEK</div>
+            </div>
+            <div class="theme-body">
+                <div class="mini-card">
+                    <div class="info-row">
+                        <span class="info-label">Browser</span>
+                        <span class="info-value">Chrome</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Platform</span>
+                        <span class="info-value">Linux</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">CPU Cores</span>
+                        <span class="info-value">8</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="theme-card theme-2">
+            <div class="theme-header">
+                <div class="theme-title">Black + Neon Terminal</div>
+                <div class="theme-subtitle">CYBERPUNK AESTHETIC</div>
+            </div>
+            <div class="theme-body">
+                <div class="mini-card">
+                    <div class="info-row">
+                        <span class="info-label">Browser</span>
+                        <span class="info-value">Chrome</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Platform</span>
+                        <span class="info-value">Linux</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">CPU Cores</span>
+                        <span class="info-value">8</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="theme-card theme-3">
+            <div class="theme-header">
+                <div class="theme-title">Slate + Orange Coral</div>
+                <div class="theme-subtitle">WARM & MODERN</div>
+            </div>
+            <div class="theme-body">
+                <div class="mini-card">
+                    <div class="info-row">
+                        <span class="info-label">Browser</span>
+                        <span class="info-value">Chrome</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Platform</span>
+                        <span class="info-value">Linux</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">CPU Cores</span>
+                        <span class="info-value">8</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="theme-card theme-4">
+            <div class="theme-header">
+                <div class="theme-title">Navy + Ice Blue</div>
+                <div class="theme-subtitle">CLEAN & PROFESSIONAL</div>
+            </div>
+            <div class="theme-body">
+                <div class="mini-card">
+                    <div class="info-row">
+                        <span class="info-label">Browser</span>
+                        <span class="info-value">Chrome</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Platform</span>
+                        <span class="info-value">Linux</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">CPU Cores</span>
+                        <span class="info-value">8</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta">
+        <a href="/theme-switcher.html">View Full Dashboard →</a>
+    </div>
+</body>
+</html>

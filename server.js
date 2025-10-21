@@ -8,6 +8,11 @@ const PORT = process.env.PORT || 3000;
 // Serve static files
 app.use(express.static(__dirname));
 
+// Redirect root to theme switcher
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'theme-switcher.html'));
+});
+
 // API endpoint for server information
 app.get('/api/server-info', (req, res) => {
   const serverInfo = {

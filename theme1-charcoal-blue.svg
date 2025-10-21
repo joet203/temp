@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="375" height="667" viewBox="0 0 375 667" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-theme1-charcoal-blue.svg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2d2d2d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a1a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="title-theme1-charcoal-blue.svg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#38bdf8;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="375" height="667" fill="url(#bg-theme1-charcoal-blue.svg)"/>
+
+  <!-- Header -->
+  <text x="187.5" y="50" font-family="system-ui, -apple-system" font-size="24" font-weight="700" text-anchor="middle" fill="url(#title-theme1-charcoal-blue.svg)" filter="url(#glow)">
+    System Dashboard
+  </text>
+  <text x="187.5" y="72" font-family="system-ui, -apple-system" font-size="10" font-weight="600" letter-spacing="2" text-anchor="middle" fill="#888">
+    REAL-TIME MONITORING
+  </text>
+
+  <!-- Theme Indicator -->
+  <text x="187.5" y="100" font-family="system-ui, -apple-system" font-size="11" font-weight="600" text-anchor="middle" fill="#666">
+    Charcoal + Electric Blue
+  </text>
+
+  <!-- Client Info Card -->
+  <g transform="translate(20, 120)">
+    <rect width="335" height="220" rx="12" fill="#1a1a1a" fill-opacity="0.6" stroke="#0ea5e9" stroke-width="1" stroke-opacity="0.3"/>
+
+    <text x="15" y="25" font-family="system-ui, -apple-system" font-size="14" font-weight="700" fill="#0ea5e9">
+      💻 Client Information
+    </text>
+    <circle cx="310" cy="20" r="4" fill="#0ea5e9" opacity="0.8" filter="url(#glow)"/>
+
+    <!-- Info rows -->
+    <text x="15" y="55" font-family="system-ui, -apple-system" font-size="11" fill="#888">Browser</text>
+    <text x="320" y="55" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">Chrome</text>
+    <line x1="15" y1="62" x2="320" y2="62" stroke="#fff" stroke-opacity="0.05"/>
+
+    <text x="15" y="80" font-family="system-ui, -apple-system" font-size="11" fill="#888">Language</text>
+    <text x="320" y="80" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">en-US</text>
+    <line x1="15" y1="87" x2="320" y2="87" stroke="#fff" stroke-opacity="0.05"/>
+
+    <text x="15" y="105" font-family="system-ui, -apple-system" font-size="11" fill="#888">Screen</text>
+    <text x="320" y="105" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">375 x 667</text>
+    <line x1="15" y1="112" x2="320" y2="112" stroke="#fff" stroke-opacity="0.05"/>
+
+    <text x="15" y="130" font-family="system-ui, -apple-system" font-size="11" fill="#888">Pixel Ratio</text>
+    <text x="320" y="130" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">2x</text>
+    <line x1="15" y1="137" x2="320" y2="137" stroke="#fff" stroke-opacity="0.05"/>
+
+    <text x="15" y="155" font-family="system-ui, -apple-system" font-size="11" fill="#888">CPU Cores</text>
+    <text x="320" y="155" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">8</text>
+    <line x1="15" y1="162" x2="320" y2="162" stroke="#fff" stroke-opacity="0.05"/>
+
+    <text x="15" y="180" font-family="system-ui, -apple-system" font-size="11" fill="#888">Connection</text>
+    <text x="320" y="180" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">4g</text>
+    <line x1="15" y1="187" x2="320" y2="187" stroke="#fff" stroke-opacity="0.05"/>
+
+    <text x="15" y="205" font-family="system-ui, -apple-system" font-size="11" fill="#888">Platform</text>
+    <text x="320" y="205" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">Linux</text>
+  </g>
+
+  <!-- Server Info Card -->
+  <g transform="translate(20, 360)">
+    <rect width="335" height="220" rx="12" fill="#1a1a1a" fill-opacity="0.6" stroke="#0ea5e9" stroke-width="1" stroke-opacity="0.3"/>
+
+    <text x="15" y="25" font-family="system-ui, -apple-system" font-size="14" font-weight="700" fill="#0ea5e9">
+      🖥️ Server Information
+    </text>
+    <circle cx="310" cy="20" r="4" fill="#0ea5e9" opacity="0.8" filter="url(#glow)"/>
+
+    <!-- Info rows -->
+    <text x="15" y="55" font-family="system-ui, -apple-system" font-size="11" fill="#888">Platform</text>
+    <text x="320" y="55" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">linux (x64)</text>
+    <line x1="15" y1="62" x2="320" y2="62" stroke="#fff" stroke-opacity="0.05"/>
+
+    <text x="15" y="80" font-family="system-ui, -apple-system" font-size="11" fill="#888">CPU</text>
+    <text x="320" y="80" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">8 cores</text>
+    <line x1="15" y1="87" x2="320" y2="87" stroke="#fff" stroke-opacity="0.05"/>
+
+    <text x="15" y="105" font-family="system-ui, -apple-system" font-size="11" fill="#888">Memory</text>
+    <text x="320" y="105" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">2.5GB / 8GB</text>
+    <line x1="15" y1="112" x2="320" y2="112" stroke="#fff" stroke-opacity="0.05"/>
+
+    <text x="15" y="130" font-family="system-ui, -apple-system" font-size="11" fill="#888">Uptime</text>
+    <text x="320" y="130" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">2d 5h 23m</text>
+    <line x1="15" y1="137" x2="320" y2="137" stroke="#fff" stroke-opacity="0.05"/>
+
+    <text x="15" y="155" font-family="system-ui, -apple-system" font-size="11" fill="#888">Node</text>
+    <text x="320" y="155" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">v20.11.0</text>
+    <line x1="15" y1="162" x2="320" y2="162" stroke="#fff" stroke-opacity="0.05"/>
+
+    <text x="15" y="180" font-family="system-ui, -apple-system" font-size="11" fill="#888">Environment</text>
+    <text x="320" y="180" font-family="system-ui, -apple-system" font-size="11" font-weight="600" fill="#fff" text-anchor="end">development</text>
+  </g>
+
+  <!-- Refresh Button -->
+  <defs>
+    <linearGradient id="btn-theme1-charcoal-blue.svg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#38bdf8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect x="250" y="615" width="105" height="36" rx="18" fill="url(#btn-theme1-charcoal-blue.svg)" filter="url(#glow)"/>
+  <text x="302.5" y="638" font-family="system-ui, -apple-system" font-size="13" font-weight="700" text-anchor="middle" fill="#000">
+    ↻ Refresh
+  </text>
+</svg>
