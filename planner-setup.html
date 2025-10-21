@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Planner - Setup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .setup-container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .setup-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .create-btn {
+            width: 100%;
+            padding: 16px;
+            background: #fff;
+            border: none;
+            border-radius: 8px;
+            color: #000;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .create-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+        }
+
+        .create-btn:active {
+            transform: translateY(0);
+        }
+
+        .features {
+            list-style: none;
+            text-align: left;
+        }
+
+        .features li {
+            padding: 12px 0;
+            color: #999;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .features li:last-child {
+            border-bottom: none;
+        }
+
+        .features li::before {
+            content: '✓';
+            color: #fff;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .note {
+            color: #666;
+            font-size: 0.8rem;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+
+        .instance-link-container {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 8px;
+        }
+
+        .instance-link-container.show {
+            display: block;
+        }
+
+        .link-label {
+            color: #00ff88;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .link-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.85rem;
+            word-break: break-all;
+            margin-bottom: 12px;
+        }
+
+        .copy-btn {
+            padding: 10px 20px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 6px;
+            color: #00ff88;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-right: 8px;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(0, 255, 136, 0.3);
+        }
+
+        .open-btn {
+            padding: 10px 20px;
+            background: #00ff88;
+            border: none;
+            border-radius: 6px;
+            color: #000;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .open-btn:hover {
+            background: #00e67a;
+        }
+    </style>
+</head>
+<body>
+    <div class="setup-container">
+        <h1>Daily Planner</h1>
+        <p class="subtitle">Create your personal planner instance with a unique link you can bookmark and share</p>
+
+        <div class="setup-card">
+            <div class="form-group">
+                <label for="plannerName">Planner Name (Optional)</label>
+                <input type="text" id="plannerName" placeholder="My Daily Planner">
+            </div>
+
+            <button class="create-btn" onclick="createInstance()">Create My Planner</button>
+
+            <div class="instance-link-container" id="linkContainer">
+                <div class="link-label">Your Planner Link</div>
+                <div class="link-display" id="linkDisplay"></div>
+                <button class="copy-btn" onclick="copyLink()">Copy Link</button>
+                <button class="open-btn" onclick="openPlanner()">Open Planner</button>
+            </div>
+
+            <p class="note">
+                Your planner will be saved in your browser. Bookmark the link to access it anytime.
+                You can share the link to collaborate or access from different devices.
+            </p>
+        </div>
+
+        <div class="setup-card">
+            <ul class="features">
+                <li>Daily habits tracking (3 customizable habits)</li>
+                <li>Priority tasks with urgency levels</li>
+                <li>General task list with categories</li>
+                <li>Monthly calendar view</li>
+                <li>Auto-save in browser storage</li>
+                <li>Clean, professional interface</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function generateId() {
+            return 'planner_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
+        function createInstance() {
+            const name = document.getElementById('plannerName').value || 'My Planner';
+            const instanceId = generateId();
+
+            // Store instance metadata
+            const instances = JSON.parse(localStorage.getItem('planner_instances') || '[]');
+            instances.push({
+                id: instanceId,
+                name: name,
+                created: new Date().toISOString()
+            });
+            localStorage.setItem('planner_instances', JSON.stringify(instances));
+
+            // Generate link
+            const baseUrl = window.location.href.replace('planner-setup.html', 'planner.html');
+            const plannerUrl = `${baseUrl}?id=${instanceId}`;
+
+            // Show link
+            document.getElementById('linkDisplay').textContent = plannerUrl;
+            document.getElementById('linkContainer').classList.add('show');
+
+            // Store the URL for quick access
+            window.generatedUrl = plannerUrl;
+        }
+
+        function copyLink() {
+            const link = document.getElementById('linkDisplay').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        function openPlanner() {
+            if (window.generatedUrl) {
+                window.location.href = window.generatedUrl;
+            }
+        }
+    </script>
+</body>
+</html>
