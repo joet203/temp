@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme 3: Slate + Orange Coral</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #0f172a 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #f97316, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .theme-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .card {
+            background: rgba(249, 115, 22, 0.03);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: #f97316;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #f97316;
+            box-shadow: 0 0 10px #f97316;
+            animation: pulse 2s infinite;
+            margin-left: auto;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 10px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #888;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: #fff;
+            font-weight: 600;
+            text-align: right;
+            font-size: 0.85rem;
+            overflow-wrap: break-word;
+        }
+
+        .network-list {
+            margin-top: 10px;
+        }
+
+        .network-item {
+            background: rgba(249, 115, 22, 0.05);
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            border-left: 3px solid #f97316;
+        }
+
+        .network-name {
+            color: #fb923c;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+
+        .network-detail {
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>System Dashboard</h1>
+            <p class="subtitle">Real-Time Monitoring</p>
+            <p class="theme-label">Slate + Orange Coral</p>
+        </header>
+
+        <div class="card">
+            <h2 class="card-title">
+                💻 Client Information
+                <span class="status-indicator"></span>
+            </h2>
+            <div id="client-content"></div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">
+                🖥️ Server Information
+                <span class="status-indicator"></span>
+            </h2>
+            <div id="server-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Real server data
+        const serverData = {"hostname":"runsc","platform":"linux","architecture":"x64","cpus":16,"cpuModel":"unknown","totalMemory":"13.00 GB","freeMemory":"12.64 GB","uptime":"0d 0h 17m 30s","nodeVersion":"v22.20.0","serverTime":"2025-10-21T01:58:16.660Z","timezone":"UTC","networkInterfaces":{"lo":[],"541f899700-v":[{"address":"21.0.0.60","family":"IPv4","mac":"86:87:72:27:0c:05"},{"address":"fe80::8487:72ff:fe27:c05","family":"IPv6","mac":"86:87:72:27:0c:05"}]},"loadAverage":["0.00","0.00","0.00"],"tempDir":"/tmp","homeDir":"/root","env":{"nodeEnv":"development","port":3000}};
+
+        // Client info
+        const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        const clientContent = document.getElementById('client-content');
+        clientContent.innerHTML = `
+            <div class="info-row">
+                <span class="info-label">Browser</span>
+                <span class="info-value">${getBrowserName()}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Language</span>
+                <span class="info-value">${navigator.language}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Screen</span>
+                <span class="info-value">${screen.width} x ${screen.height}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Viewport</span>
+                <span class="info-value">${window.innerWidth} x ${window.innerHeight}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Pixel Ratio</span>
+                <span class="info-value">${window.devicePixelRatio}x</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">CPU Cores</span>
+                <span class="info-value">${navigator.hardwareConcurrency || 'N/A'}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Memory</span>
+                <span class="info-value">${navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'N/A'}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Connection</span>
+                <span class="info-value">${connection ? connection.effectiveType : 'N/A'}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Platform</span>
+                <span class="info-value">${navigator.platform}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Timezone</span>
+                <span class="info-value">${Intl.DateTimeFormat().resolvedOptions().timeZone}</span>
+            </div>
+        `;
+
+        // Server info
+        let networkHTML = '';
+        for (const [name, addrs] of Object.entries(serverData.networkInterfaces)) {
+            if (addrs.length > 0) {
+                networkHTML += `
+                    <div class="network-item">
+                        <div class="network-name">${name}</div>
+                        ${addrs.map(addr => `
+                            <div class="network-detail">${addr.family}: ${addr.address}</div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+        }
+
+        const serverContent = document.getElementById('server-content');
+        serverContent.innerHTML = `
+            <div class="info-row">
+                <span class="info-label">Hostname</span>
+                <span class="info-value">${serverData.hostname}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Platform</span>
+                <span class="info-value">${serverData.platform} (${serverData.architecture})</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">CPU Cores</span>
+                <span class="info-value">${serverData.cpus}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Memory</span>
+                <span class="info-value">${serverData.freeMemory} / ${serverData.totalMemory}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Uptime</span>
+                <span class="info-value">${serverData.uptime}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Load Avg</span>
+                <span class="info-value">${serverData.loadAverage.join(', ')}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Node</span>
+                <span class="info-value">${serverData.nodeVersion}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Timezone</span>
+                <span class="info-value">${serverData.timezone}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Environment</span>
+                <span class="info-value">${serverData.env.nodeEnv}</span>
+            </div>
+            ${networkHTML ? `<div class="network-list">${networkHTML}</div>` : ''}
+        `;
+
+        function getBrowserName() {
+            const ua = navigator.userAgent;
+            if (ua.includes('Firefox')) return 'Firefox';
+            if (ua.includes('Edg')) return 'Edge';
+            if (ua.includes('Chrome')) return 'Chrome';
+            if (ua.includes('Safari')) return 'Safari';
+            if (ua.includes('Opera')) return 'Opera';
+            return 'Unknown';
+        }
+    </script>
+</body>
+</html>
