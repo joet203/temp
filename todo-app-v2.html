@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Planner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f0f;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Compact Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .datetime {
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+        }
+
+        .date-main {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .time-period {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .points-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 255, 136, 0.1);
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .points-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .points-label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 16px;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        /* Daily Habits */
+        .habits-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .habit-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .habit-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+
+        .habit-item.completed {
+            opacity: 0.6;
+        }
+
+        .checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .habit-item.completed .checkbox {
+            background: #00ff88;
+            border-color: #00ff88;
+        }
+
+        .habit-item.completed .checkbox::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            color: #000;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .habit-text {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .habit-item.completed .habit-text {
+            text-decoration: line-through;
+        }
+
+        .habit-points {
+            font-size: 0.75rem;
+            color: #00ff88;
+            font-weight: 600;
+        }
+
+        /* Priority Tasks */
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 212, 255, 0.2);
+        }
+
+        .task-item.completed {
+            opacity: 0.5;
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+        }
+
+        .task-text {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
+        .task-priority {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .priority-high {
+            background: rgba(255, 68, 68, 0.15);
+            color: #ff6b6b;
+        }
+
+        .priority-medium {
+            background: rgba(255, 165, 0, 0.15);
+            color: #ffa500;
+        }
+
+        .priority-low {
+            background: rgba(100, 200, 255, 0.15);
+            color: #64c8ff;
+        }
+
+        .task-points {
+            font-size: 0.75rem;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        /* All Tasks */
+        .all-tasks {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .task-simple {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .task-simple:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .task-simple.completed {
+            opacity: 0.4;
+        }
+
+        .task-simple.completed .task-simple-text {
+            text-decoration: line-through;
+        }
+
+        .task-simple-text {
+            flex: 1;
+            font-size: 0.85rem;
+            color: #ccc;
+        }
+
+        .task-category {
+            font-size: 0.7rem;
+            color: #666;
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        /* Calendar - Simplified */
+        .calendar-compact {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .calendar-month {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .calendar-nav button {
+            width: 28px;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            color: #888;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .calendar-nav button:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #666;
+            padding: 4px;
+            font-weight: 500;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid transparent;
+        }
+
+        .calendar-day:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .calendar-day.today {
+            background: rgba(0, 212, 255, 0.15);
+            border-color: rgba(0, 212, 255, 0.3);
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.2;
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Compact Header -->
+        <div class="header">
+            <div class="datetime">
+                <div class="date-main" id="dateDisplay">Monday, Oct 21</div>
+                <div class="time-period" id="timePeriod">Evening</div>
+            </div>
+            <div class="points-display">
+                <div class="points-number" id="pointsDisplay">240</div>
+                <div class="points-label">Points</div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <!-- Left Column -->
+            <div>
+                <!-- Daily Habits -->
+                <div class="section">
+                    <div class="section-title">Daily Habits</div>
+                    <div class="habits-grid" id="habitsList"></div>
+                </div>
+
+                <!-- Priority Tasks -->
+                <div class="section" style="margin-top: 16px;">
+                    <div class="section-title">Priority Tasks</div>
+                    <div id="priorityTasks"></div>
+                </div>
+
+                <!-- All Tasks -->
+                <div class="section" style="margin-top: 16px;">
+                    <div class="section-title">All Tasks</div>
+                    <div class="all-tasks" id="allTasks"></div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+                <!-- Calendar -->
+                <div class="calendar-compact">
+                    <div class="calendar-header">
+                        <div class="calendar-month" id="calendarMonth">October 2024</div>
+                        <div class="calendar-nav">
+                            <button onclick="previousMonth()">←</button>
+                            <button onclick="nextMonth()">→</button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid" id="calendarGrid"></div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats">
+                    <div class="stat-box">
+                        <div class="stat-number" id="completedToday">5</div>
+                        <div class="stat-label">Done Today</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="streakDays">12</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize data with examples
+        let habits = JSON.parse(localStorage.getItem('habits')) || [
+            { id: 1, text: 'Morning workout', completed: true, points: 20 },
+            { id: 2, text: 'Read for 30 minutes', completed: true, points: 15 },
+            { id: 3, text: 'Drink 8 glasses of water', completed: false, points: 10 }
+        ];
+
+        let priorityTasks = JSON.parse(localStorage.getItem('priorityTasks')) || [
+            { id: 1, text: 'Review Q4 budget proposal', completed: false, priority: 'high', points: 30 },
+            { id: 2, text: 'Schedule team meeting', completed: true, priority: 'medium', points: 15 },
+            { id: 3, text: 'Update project documentation', completed: false, priority: 'low', points: 10 }
+        ];
+
+        let allTasks = JSON.parse(localStorage.getItem('allTasks')) || [
+            { id: 1, text: 'Buy groceries', completed: false, category: 'Personal' },
+            { id: 2, text: 'Call dentist for appointment', completed: false, category: 'Health' },
+            { id: 3, text: 'Review pull requests', completed: true, category: 'Work' },
+            { id: 4, text: 'Plan weekend trip', completed: false, category: 'Personal' },
+            { id: 5, text: 'Send monthly report', completed: false, category: 'Work' },
+            { id: 6, text: 'Fix broken faucet', completed: false, category: 'Home' }
+        ];
+
+        let totalPoints = parseInt(localStorage.getItem('totalPoints')) || 240;
+        let currentMonth = new Date().getMonth();
+        let currentYear = new Date().getFullYear();
+
+        function updateDateTime() {
+            const now = new Date();
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            const dayName = days[now.getDay()];
+            const month = months[now.getMonth()];
+            const date = now.getDate();
+
+            const hour = now.getHours();
+            let period;
+            if (hour < 12) period = 'Morning';
+            else if (hour < 17) period = 'Afternoon';
+            else if (hour < 21) period = 'Evening';
+            else period = 'Night';
+
+            document.getElementById('dateDisplay').textContent = `${dayName}, ${month} ${date}`;
+            document.getElementById('timePeriod').textContent = period;
+        }
+
+        function saveData() {
+            localStorage.setItem('habits', JSON.stringify(habits));
+            localStorage.setItem('priorityTasks', JSON.stringify(priorityTasks));
+            localStorage.setItem('allTasks', JSON.stringify(allTasks));
+            localStorage.setItem('totalPoints', totalPoints);
+            render();
+        }
+
+        function toggleHabit(id) {
+            const habit = habits.find(h => h.id === id);
+            if (habit) {
+                habit.completed = !habit.completed;
+                if (habit.completed) {
+                    totalPoints += habit.points;
+                } else {
+                    totalPoints -= habit.points;
+                }
+                saveData();
+            }
+        }
+
+        function togglePriorityTask(id) {
+            const task = priorityTasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                if (task.completed) {
+                    totalPoints += task.points;
+                } else {
+                    totalPoints -= task.points;
+                }
+                saveData();
+            }
+        }
+
+        function toggleTask(id) {
+            const task = allTasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                saveData();
+            }
+        }
+
+        function renderHabits() {
+            const container = document.getElementById('habitsList');
+            container.innerHTML = habits.map(habit => `
+                <div class="habit-item ${habit.completed ? 'completed' : ''}" onclick="toggleHabit(${habit.id})">
+                    <div class="checkbox"></div>
+                    <div class="habit-text">${habit.text}</div>
+                    <div class="habit-points">+${habit.points}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderPriorityTasks() {
+            const container = document.getElementById('priorityTasks');
+            container.innerHTML = priorityTasks.map(task => `
+                <div class="task-item ${task.completed ? 'completed' : ''}" onclick="togglePriorityTask(${task.id})">
+                    <div class="checkbox"></div>
+                    <div class="task-text">${task.text}</div>
+                    <div class="task-priority priority-${task.priority}">${task.priority.toUpperCase()}</div>
+                    <div class="task-points">+${task.points}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderAllTasks() {
+            const container = document.getElementById('allTasks');
+            container.innerHTML = allTasks.map(task => `
+                <div class="task-simple ${task.completed ? 'completed' : ''}" onclick="toggleTask(${task.id})">
+                    <div class="checkbox"></div>
+                    <div class="task-simple-text">${task.text}</div>
+                    <div class="task-category">${task.category}</div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('pointsDisplay').textContent = totalPoints;
+            const completedCount = habits.filter(h => h.completed).length +
+                                  priorityTasks.filter(t => t.completed).length +
+                                  allTasks.filter(t => t.completed).length;
+            document.getElementById('completedToday').textContent = completedCount;
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const firstDay = new Date(currentYear, currentMonth, 1);
+            const lastDay = new Date(currentYear, currentMonth + 1, 0);
+            const prevLastDay = new Date(currentYear, currentMonth, 0);
+            const startDay = firstDay.getDay();
+            const totalDays = lastDay.getDate();
+            const today = new Date();
+
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+                              'July', 'August', 'September', 'October', 'November', 'December'];
+
+            document.getElementById('calendarMonth').textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+            let html = '';
+
+            ['S', 'M', 'T', 'W', 'T', 'F', 'S'].forEach(day => {
+                html += `<div class="calendar-day-header">${day}</div>`;
+            });
+
+            for (let i = startDay - 1; i >= 0; i--) {
+                const day = prevLastDay.getDate() - i;
+                html += `<div class="calendar-day other-month">${day}</div>`;
+            }
+
+            for (let day = 1; day <= totalDays; day++) {
+                const isToday = today.getDate() === day &&
+                               today.getMonth() === currentMonth &&
+                               today.getFullYear() === currentYear;
+
+                html += `<div class="calendar-day ${isToday ? 'today' : ''}">${day}</div>`;
+            }
+
+            const remainingDays = 42 - (startDay + totalDays);
+            for (let day = 1; day <= remainingDays; day++) {
+                html += `<div class="calendar-day other-month">${day}</div>`;
+            }
+
+            grid.innerHTML = html;
+        }
+
+        function previousMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        }
+
+        function render() {
+            renderHabits();
+            renderPriorityTasks();
+            renderAllTasks();
+            updateStats();
+            renderCalendar();
+        }
+
+        // Initialize
+        updateDateTime();
+        render();
+        setInterval(updateDateTime, 60000); // Update every minute
+    </script>
+</body>
+</html>
